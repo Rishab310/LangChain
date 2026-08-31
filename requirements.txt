@@ -25,7 +25,7 @@ python-dotenv
 numpy
 scikit-learn
 
-# Pytorch
+# Pytorch & transformers
 torch 
 transformers
 sentencepiece
