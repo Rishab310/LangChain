@@ -1,12 +1,13 @@
 from langchain_huggingface import HuggingFaceEmbeddings
 from sklearn.metrics.pairwise import cosine_similarity
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
 embedding = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2",
-    cache_folder="../hf_cache"
+    cache_folder=os.getenv("HUGGINGFACE_CACHE_PATH")
 )
 
 documents = [
