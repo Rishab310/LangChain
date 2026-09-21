@@ -1,4 +1,5 @@
 from langchain_huggingface import ChatHuggingFace, HuggingFacePipeline
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 import os
@@ -28,15 +29,17 @@ model = ChatOpenAI(
     max_tokens=100,    
 )
 
-chat_history = []
+chat_history = [
+    SystemMessage(content='You are an AI assistant, answer all queries in one line only.')
+]
 
 while True:
     user_input = input('You: ')
-    chat_history.append(user_input)
+    chat_history.append(HumanMessage(content=user_input))
     if user_input == 'exit' :
         break
     result = model.invoke(chat_history)
-    chat_history.append(result.content)
+    chat_history.append(AIMessage(content=result.content))
     print("AI: ",result.content)
 
 print(chat_history)
