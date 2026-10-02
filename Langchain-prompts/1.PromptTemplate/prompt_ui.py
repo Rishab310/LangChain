@@ -1,5 +1,6 @@
 from langchain_huggingface import ChatHuggingFace, HuggingFacePipeline
 from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
 import streamlit as st 
 from langchain_core.prompts import PromptTemplate, load_prompt
 import os
@@ -7,21 +8,31 @@ import os
 
 load_dotenv()
 
-@st.cache_resource
-def load_model():
-    llm = HuggingFacePipeline.from_model_id(
-        model_id="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-        task="text-generation",
-        model_kwargs={"cache_dir": os.getenv("HUGGINGFACE_CACHE_PATH")},
-        pipeline_kwargs={
-            "temperature": 0.1,
-            # "max_new_tokens": 500,
-            "return_full_text": False,
-        }
-    )
-    return ChatHuggingFace(llm=llm)
+# @st.cache_resource
+# def load_model():
+#     llm = HuggingFacePipeline.from_model_id(
+#         model_id="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+#         task="text-generation",
+#         model_kwargs={"cache_dir": os.getenv("HUGGINGFACE_CACHE_PATH")},
+#         pipeline_kwargs={
+#             "temperature": 0.1,
+#             # "max_new_tokens": 500,
+#             "return_full_text": False,
+#         }
+#     )
+#     return ChatHuggingFace(llm=llm)
 
-model = load_model()
+# model = load_model()
+
+model = ChatOpenAI(
+    base_url="https://api.groq.com/openai/v1",
+    api_key=os.environ["GROQ_API_KEY"],
+    model="openai/gpt-oss-20b",   # or "openai/gpt-oss-120b"
+    temperature=0,
+    max_retries=3,
+    reasoning_effort="low",   # "low" | "medium" | "high"
+    # max_tokens=100,    
+)
 
 st.header('Research Tool')
 
@@ -32,7 +43,7 @@ style_input = st.selectbox( "Select Explanation Style :", ["Beginner-Friendly", 
 length_input = st.selectbox( "Select Explanation Length :", ["Short (1 paragraph)", "Medium (3 paragraphs)", "Long (5 paragraphs)"] )
 
 
-template = load_prompt('template.json')
+template = load_prompt('/Users/rishabgoyal/Learning/Langchain/Langchain-prompts/1.PromptTemplate/template.json')
 
 if st.button("Summarize"):
     chain = template | model
