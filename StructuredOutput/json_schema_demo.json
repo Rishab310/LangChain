@@ -1,0 +1,16 @@
+{
+    "title": "student",
+    "description": "A simple JSON schema to demonstrate the structure of a student object.",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "The name of the student"
+        },
+        "age": {
+            "type": "integer",
+            "description": "The age of the student"
+        }
+    },
+    "required": ["name", "email"]
+}
