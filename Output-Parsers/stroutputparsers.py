@@ -30,6 +30,9 @@ template2 = PromptTemplate(
     input_variables=['text']
 ) 
 
+# String Output Parser
+# Converts each model's AIMessage into plain text content for the next prompt
+# and for the final result, instead of passing the full message object.
 parser = StrOutputParser()
 
 chain = template1 | model | parser | template2 | model | parser 
