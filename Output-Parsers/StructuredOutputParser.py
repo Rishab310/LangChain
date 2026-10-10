@@ -25,7 +25,7 @@ response_schemas = [
 parser = StructuredOutputParser.from_response_schemas(response_schemas)
 
 template = PromptTemplate(
-    template='Give me the name, age, city and person of this famous person : {person} \n {format_instruction}',
+    template='Give me the name, age, city and profession of this famous person : {person} \n {format_instruction}',
     input_variables=['person'],
     partial_variables={'format_instruction': parser.get_format_instructions()}
 )
